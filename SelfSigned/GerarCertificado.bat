@@ -15,7 +15,7 @@ set /p "ST=Informe o Estado (ST) [padrao: SP]: "
 set /p "C=Informe o Pais (C) [padrao: BR]: " 
 :: --------- Defaults se o usuario deixar em branco --------- 
 if not defined L set "L=Sao Paulo" 
-if not defined S set "ST=SP" 
+if not defined ST set "ST=SP" 
 if not defined C set "C=BR" 
 :: --------- Perguntar validade e senha da chave (opcional) --------- 
 set "DAYS=365" 
@@ -28,12 +28,12 @@ echo - Se deixar em branco, a chave sera gerada SEM senha.
 set "PASS=" 
 set /p "PASS=Informe a senha da chave (ou deixe em branco): " 
 :: --------- Sanitizacao simples (remover aspas) --------- 
-for %%V in (CN OU ISPB SIGLA CODIGO L S C DAYS PASS) do ( 
+for %%V in (CN OU ISPB SIGLA CODIGO L ST C DAYS PASS) do ( 
 set "%%V=!%%V:"=%%!" 
 ) 
 :: --------- Montar SUBJECT --------- 
 :: Resultado: ... /O=%ISPB%/O=%SIGLA% %CODIGO%/O=ICP-Brasil/ ... 
-set "SUBJ=/CN=%CN%/OU=%OU%/OU=%ISPB%/OU=%SIGLA% %CODIGO%/OU=ICP-Brasil/L=%L%/ST=%S%/C=%C%" 
+set "SUBJ=/CN=%CN%/OU=%OU%/OU=%ISPB%/OU=%SIGLA% %CODIGO%/OU=ICP-Brasil/L=%L%/ST=%ST%/C=%C%" 
 :: --------- Serial aleatorio 64 bits --------- 
 set "serial=" 
 for /L %%A in (1,1,8) do ( 
@@ -43,23 +43,20 @@ set "serial=!serial!!hex:~-2!"
 ) 
 echo. 
 echo [Resumo] 
-echo   CN         
-echo   OU        
-: %CN% 
-: %OU% 
-echo   O (ISPB)   : %ISPB% 
-echo   O (Sigla+Codigo): %SIGLA% %CODIGO% 
-echo   O          
-: ICP-Brasil 
-echo   L/S/C      : %L% / %S% / %C% 
-echo   Validade   : %DAYS% dias 
+echo   CN	: %CN%
+echo   OU	: %OU%
+echo   O (ISPB)	: %ISPB% 
+echo   O (Sigla+Codigo)	: %SIGLA% %CODIGO% 
+echo   O	: ICP-Brasil 
+echo   L/S/C	: %L% / %ST% / %C% 
+echo   Validade	: %DAYS% dias 
 if defined PASS (
-echo   Chave     : SERA GERADA COM SENHA
+echo   Chave	: SERA GERADA COM SENHA
 ) else (
-echo   Chave     : SERA GERADA SEM SENHA
+echo   Chave	: SERA GERADA SEM SENHA
 )
-echo   Serial     : 0x%serial% 
-echo   Subject    : %SUBJ% 
+echo   Serial	: 0x%serial% 
+echo   Subject	: %SUBJ% 
 echo. 
 :: -------- Aviso de seguranca sobre a chave privada -------- 
 echo [AVISO] A chave privada (.key) e confidencial: armazene com seguranca (permissoes restritas), 
@@ -76,7 +73,7 @@ echo [1/3] Certificado autoassinado (gera Certnew.key e Certnew.cer)
 if defined PASS ( 
 echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% -keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% passout pass:******** 
 ) else ( 
-echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% nodes -keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% 
+echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% -nodes -keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% 
 ) 
 pause 
 if defined PASS ( 
@@ -100,7 +97,7 @@ echo Comando: openssl req -new -sha256 -key Certnew.key -out Certnew.csr subj "%
 ) 
 pause 
 if defined PASS ( 
-openssl req -new -sha256 -key Certnew.key -out Certnew.csr -subj "%SUBJ%" passin pass:%PASS% 
+openssl req -new -sha256 -key Certnew.key -out Certnew.csr -subj "%SUBJ%" -passin pass:%PASS% 
 ) else ( 
 openssl req -new -sha256 -key Certnew.key -out Certnew.csr -subj "%SUBJ%" 
 ) 
