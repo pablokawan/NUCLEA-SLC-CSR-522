@@ -53,8 +53,11 @@ echo   O
 : ICP-Brasil 
 echo   L/S/C      : %L% / %S% / %C% 
 echo   Validade   : %DAYS% dias 
-if defined PASS (echo   Chave     : SERÁ GERADA COM SENHA) else (echo   Chave     
-: SERÁ GERADA SEM SENHA) 
+if defined PASS (
+echo   Chave     : SERÁ GERADA COM SENHA
+) else (
+echo   Chave     : SERÁ GERADA SEM SENHA
+)
 echo   Serial     : 0x%serial% 
 echo   Subject    : %SUBJ% 
 echo. 
