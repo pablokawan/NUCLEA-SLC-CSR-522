@@ -136,8 +136,7 @@ echo.
 echo ===== Artefatos ===== 
 if exist Certnew.key echo    Chave privada: Certnew.key 
 if exist Certnew.cer echo    Certificado  : Certnew.cer 
-if exist Certnew.csr echo    CSR          
-: Certnew.csr 
+if exist Certnew.csr echo    CSR          : Certnew.csr 
 echo ====================== 
 echo. 
 :: -------- Mensagem FINAL de seguranca -------- 
