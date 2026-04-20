@@ -74,7 +74,7 @@ goto end
 :: -------- Etapa 1: Autoassinado (gera key + cer) -------- 
 echo [1/3] Certificado autoassinado (gera Certnew.key e Certnew.cer) 
 if defined PASS ( 
-echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% passout pass:******** 
+echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% -keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% passout pass:******** 
 ) else ( 
 echo Comando: openssl req -x509 -newkey rsa:2048 -sha256 -days %DAYS% nodes -keyout Certnew.key -out Certnew.cer -subj "%SUBJ%" -set_serial 0x%serial% 
 ) 
