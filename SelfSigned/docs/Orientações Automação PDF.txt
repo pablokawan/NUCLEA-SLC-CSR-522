@@ -1,0 +1,10 @@
+1.	Abra o PDF em anexo.
+2.	Selecione e copie todo o conteúdo do script exibido no PDF.
+3.	Abra o Bloco de Notas (Notepad) ou outro editor de texto simples.
+4.	Cole o conteúdo copiado no editor.
+5.	No menu Arquivo, clique em Salvar como…
+6.	Em Nome do arquivo, digite:
+GerarCertificado.bat
+7.	Em Tipo, selecione Todos os arquivos (All Files).
+8.	Em Codificação, mantenha ANSI (ou UTF 8 sem BOM, caso disponível).
+9.	Clique em Salvar.
