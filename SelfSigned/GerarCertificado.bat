@@ -43,20 +43,20 @@ set "serial=!serial!!hex:~-2!"
 ) 
 echo. 
 echo [Resumo] 
-echo   CN	: %CN%
-echo   OU	: %OU%
-echo   O (ISPB)	: %ISPB% 
+echo   CN				: %CN%
+echo   OU				: %OU%
+echo   O (ISPB)			: %ISPB% 
 echo   O (Sigla+Codigo)	: %SIGLA% %CODIGO% 
-echo   O	: ICP-Brasil 
-echo   L/S/C	: %L% / %ST% / %C% 
-echo   Validade	: %DAYS% dias 
+echo   O				: ICP-Brasil 
+echo   L/S/C			: %L% / %ST% / %C% 
+echo   Validade			: %DAYS% dias 
 if defined PASS (
-echo   Chave	: SERA GERADA COM SENHA
+echo   Chave			: SERA GERADA COM SENHA
 ) else (
-echo   Chave	: SERA GERADA SEM SENHA
+echo   Chave			: SERA GERADA SEM SENHA
 )
-echo   Serial	: 0x%serial% 
-echo   Subject	: %SUBJ% 
+echo   Serial			: 0x%serial% 
+echo   Subject			: %SUBJ% 
 echo. 
 :: -------- Aviso de seguranca sobre a chave privada -------- 
 echo [AVISO] A chave privada (.key) e confidencial: armazene com seguranca (permissoes restritas), 
@@ -91,9 +91,9 @@ echo.
 :: -------- Etapa 2: CSR usando a MESMA chave -------- 
 echo [2/3] Gerar CSR reutilizando a MESMA chave e o MESMO subject 
 if defined PASS ( 
-echo Comando: openssl req -new -sha256 -key Certnew.key -out Certnew.csr subj "%SUBJ%" -passin pass:******** 
+echo Comando: openssl req -new -sha256 -key Certnew.key -out Certnew.csr -subj "%SUBJ%" -passin pass:******** 
 ) else ( 
-echo Comando: openssl req -new -sha256 -key Certnew.key -out Certnew.csr subj "%SUBJ%" 
+echo Comando: openssl req -new -sha256 -key Certnew.key -out Certnew.csr -subj "%SUBJ%" 
 ) 
 pause 
 if defined PASS ( 
@@ -110,7 +110,11 @@ echo [OK] CSR gerada: Certnew.csr
 echo. 
 :: -------- Etapa 3: Verificacao de correspondencia (modulus) -------- 
 echo [3/3] Verificando se key, cer e csr correspondem (comparando modulus)... 
-openssl rsa -in Certnew.key -noout -modulus %__PASSIN__% | openssl md5 > key.md5 
+if defined PASS (
+    openssl rsa -in Certnew.key -noout -modulus -passin pass:%PASS% | openssl md5 > key.md5
+) else (
+    openssl rsa -in Certnew.key -noout -modulus | openssl md5 > key.md5
+)
 openssl x509 -in Certnew.cer -noout -modulus | openssl md5 > cer.md5 
 openssl req -in Certnew.csr -noout -modulus | openssl md5 > csr.md5 
 :: Ler MD5s para comparar 
