@@ -11,11 +11,11 @@ set /p "ISPB=Informe o numero do ISPB (8 primerios digitos do CNPJ): "
 set /p "SIGLA=Informe a sigla (ex.: CCC, CMP, CTC, MCB, PCA, RRC, SCC, SLC, RRC, SEC): " 
 set /p "CODIGO=Informe o codigo (ex.: T001 para homologacacao ou P001 para producao): " 
 set /p "L=Informe a Cidade (L) [padrao: Sao Paulo]: " 
-set /p "S=Informe o Estado (S) [padrao: SP]: " 
+set /p "ST=Informe o Estado (ST) [padrao: SP]: " 
 set /p "C=Informe o Pais (C) [padrao: BR]: " 
 :: --------- Defaults se o usuario deixar em branco --------- 
 if not defined L set "L=Sao Paulo" 
-if not defined S set "S=SP" 
+if not defined S set "ST=SP" 
 if not defined C set "C=BR" 
 :: --------- Perguntar validade e senha da chave (opcional) --------- 
 set "DAYS=365" 
@@ -33,7 +33,7 @@ set "%%V=!%%V:"=%%!"
 ) 
 :: --------- Montar SUBJECT --------- 
 :: Resultado: ... /O=%ISPB%/O=%SIGLA% %CODIGO%/O=ICP-Brasil/ ... 
-set "SUBJ=/CN=%CN%/OU=%OU%/OU=%ISPB%/OU=%SIGLA% %CODIGO%/OU=ICP-Brasil/L=%L%/S=%S%/C=%C%" 
+set "SUBJ=/CN=%CN%/OU=%OU%/OU=%ISPB%/OU=%SIGLA% %CODIGO%/OU=ICP-Brasil/L=%L%/ST=%S%/C=%C%" 
 :: --------- Serial aleatorio 64 bits --------- 
 set "serial=" 
 for /L %%A in (1,1,8) do ( 
@@ -54,9 +54,9 @@ echo   O
 echo   L/S/C      : %L% / %S% / %C% 
 echo   Validade   : %DAYS% dias 
 if defined PASS (
-echo   Chave     : SERÁ GERADA COM SENHA
+echo   Chave     : SERA GERADA COM SENHA
 ) else (
-echo   Chave     : SERÁ GERADA SEM SENHA
+echo   Chave     : SERA GERADA SEM SENHA
 )
 echo   Serial     : 0x%serial% 
 echo   Subject    : %SUBJ% 
