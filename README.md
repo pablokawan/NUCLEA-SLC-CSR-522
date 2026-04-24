@@ -61,6 +61,12 @@ Execute o arquivo:
 GerarCertificado.bat
 ```
 
+**Observação importante sobre a senha da `.key`:**
+Na versão original do script, senhas contendo `!` podiam ser corrompidas pelo `cmd` por causa de `setlocal enabledelayedexpansion`.
+Isso afeta caracteres de exclamação `!`, especialmente quando a senha contém um ou mais `!`.
+Exemplo anonimizado: `SenhaForte!123` podia ser gravada sem o `!`.
+O ajuste feito no script evita esse problema e preserva a senha exatamente como foi digitada.
+
 Durante a execução, o script irá solicitar o preenchimento de informações necessárias para geração do certificado.
 
 📌 **Orientação:**

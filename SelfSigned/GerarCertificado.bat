@@ -41,6 +41,7 @@ set /A rand=!random! %% 256
 set "hex=0!rand!" 
 set "serial=!serial!!hex:~-2!" 
 ) 
+setlocal disabledelayedexpansion
 echo. 
 echo [Resumo] 
 echo   CN				: %CN%
@@ -146,4 +147,5 @@ echo ou HSM, e mantenha backup criptografado em local controlado.
 echo. 
 echo Concluido. 
 :end 
+endlocal
 endlocal
