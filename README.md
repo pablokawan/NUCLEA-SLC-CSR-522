@@ -61,16 +61,7 @@ Execute o arquivo:
 GerarCertificado.bat
 ```
 
-**Observação importante sobre a senha da `.key`:**
-Na versão original do script, senhas contendo `!` podiam ser corrompidas pelo `cmd` por causa de `setlocal enabledelayedexpansion`.
-Isso afeta caracteres de exclamação `!`, especialmente quando a senha contém um ou mais `!`.
-Exemplo anonimizado: `SenhaForte!123` podia ser gravada sem o `!`.
-O ajuste feito no script evita esse problema e preserva a senha exatamente como foi digitada.
-
 Durante a execução, o script irá solicitar o preenchimento de informações necessárias para geração do certificado.
-
-📌 **Orientação:**
-Preencha os campos conforme os prompts exibidos no terminal, respeitando os padrões definidos pela Núclea (ex.: CN, OU, ambiente, etc.).
 
 ## 4. Emissão do Certificado Digital Autoassinado
 
@@ -108,34 +99,3 @@ Senha da chave           : (opcional)
 /ST=SE
 /C=BR
 ```
-
-### ⚙️ Processo executado pelo script
-
-O script realiza automaticamente:
-
-**1. Geração do certificado autoassinado**
-
-* `Certnew.key` (chave privada)
-* `Certnew.cer` (certificado)
-
-**2. Geração do CSR**
-
-* `Certnew.csr`
-* Utiliza a mesma chave e o mesmo *subject*
-
-**3. Validação**
-
-* Verifica consistência entre `.key`, `.cer` e `.csr` (modulus)
-
-### 📦 Artefatos gerados
-
-* Chave privada: `Certnew.key`
-* Certificado: `Certnew.cer`
-* CSR: `Certnew.csr`
-
-### ⚠️ Segurança
-
-* A chave privada é confidencial e não deve ser compartilhada
-* Restringir acesso (permissões locais)
-* Armazenar preferencialmente em ambiente seguro (Vault/HSM)
-* Manter backup criptografado controlado

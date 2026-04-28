@@ -1,3 +1,5 @@
 *.cer
 *.csr
 *.key
+*.pfx
+*.txt
