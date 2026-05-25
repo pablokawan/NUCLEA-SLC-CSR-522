@@ -1,0 +1,3110 @@
+---
+openapi: "3.0.3"
+info:
+  title: "API SLC"
+  termsOfService: "https://www.nuclea.com.br/liquidacao-de-cartoes-slc/"
+  contact:
+    name: "Centro de Excelência Clientes - CDE"
+    email: "SLC@nuclea.com.br"
+  license:
+    name: "Núclea"
+    url: "https://www.nuclea.com.br"
+  version: "1.3.15"
+tags:
+- name: "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+- name: "Serviços Núclea (apenas instituições domicílio)"
+x-cip:
+  paths-interface: "/v1"
+  model-package: "br.org.cip.api.slc.model"
+  api-package: "br.org.cip.api.slc"
+  group-id: "br.org.cip.api.slc"
+  artifact-id: "api-slc"
+  api-version: "1.3.15"
+paths:
+  /v1/ferramentas/credenciadoras/eco:
+    get:
+      x-cip:
+        funcionalidade: "SLC0800"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0800, síncrono, resultado único"
+      description: "Ferramenta de eco para as credenciadoras"
+      operationId: "getCredenciadorasEco"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - $ref: "#/components/parameters/pqtMsgEco"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Eco"
+              examples:
+                ExemploEco:
+                  value:
+                    msg: "XYXYXYXYXYXYXYXXY"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b>Valores\
+            \ possiveis:</b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/ferramentas/bancos/eco:
+    get:
+      x-cip:
+        funcionalidade: "SLC0801"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas instituições domicílio)"
+      summary: "SLC0801, síncrono, resultado único"
+      description: "Ferramenta de eco para os bancos"
+      operationId: "getBancosEco"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - $ref: "#/components/parameters/pqtMsgEco"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Eco"
+              examples:
+                ExemploEco:
+                  value:
+                    msg: "XYXYXYXYXYXYXYXXY"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b>Valores\
+            \ possiveis:</b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/credenciadoras/relatorios/detalhado-por-nuliquid:
+    post:
+      x-cip:
+        funcionalidades: "SLC0908"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0908, síncrono"
+      description: "Solicita relatorio detalhado por NULiquid"
+      operationId: "getRelatorioCredenciadorasDetalhadoPorNULiquid"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0908Request"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GrupoRelatorioDetalhadoPorNULiquid"
+              examples:
+                Exemplo1:
+                  value:
+                    numCtrlRelat: 12345678901234567890
+                    cNPJCreddr: 12345678901234
+                    nomRedzdCred: "Nome da Credenciadora"
+                    iSPBIFDomicilio: 12345678
+                    nomRedzdID: "Nome da Instituicao Domicilio"
+                    dtRef: "2022-01-05"
+                    dtPgto: "2022-01-05"
+                    nULiquid: 123456789012345678901
+                    vlrPgto: 1.2345678901234568E16
+                    codInstitdrArranjoPgto: "001"
+                    nomInstitdrArranjoPgto: "Nome Instituidor Arranjo Pagamento"
+                    tpProd: "Tipo do Produto"
+                    sitSolictLiquidacao: "Descricao da situacao de solicitacao de\
+                      \ Liquidacao do lancamento"
+                    sitRespDomicilio: "Descricao da situacao da resposta da Instituicao\
+                      \ Domicílio"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. <b><u>Valores\
+            \ possiveis:</u></b><br> ESLC0024 - Requisição enviada fora da grade horá\
+            ria.<br> ESLC0041 - Não existe grade horaria associada.<br> ESLC0042 -\
+            \ Não existe adesao para essa funcionalidade.<br> ESLC0118 - Participante\
+            \ não cadastrado no SLC.<br> ESLC0119 - Participante Administrado não\
+            \ é administrado pelo Participante Principal.<br> ESLC0123 - Participante\
+            \ não aderiu a funcionalidade."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/credenciadoras/relatorios/consulta-cadastro-em-arranjo:
+    get:
+      x-cip:
+        funcionalidades: "SLC0910"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0910, síncrono"
+      description: "Solicita a consulta dos arranjos em que a contraparte esta cadastrada"
+      operationId: "getConsultaCadastroEmArranjoCredenciador"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - name: "iSPBContraparte"
+        in: "query"
+        description: "ISPB Contraparte"
+        required: true
+        schema:
+          type: "string"
+          pattern: "^\\d{8}$"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ConsultaCadastroEmArranjo"
+              examples:
+                Exemplo1:
+                  value:
+                    iSPBContraparte: 12345678
+                    arranjosPgto:
+                    - codInstitdrArranjoPgto: "001"
+                      nomInstitdrArranjoPgto: "Nome Instituidor Arranjo Pagamento"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. <b><u>Valores\
+            \ possiveis:</u></b><br> ESLC0024 - Requisição enviada fora da grade horá\
+            ria.<br> ESLC0041 - Não existe grade horaria associada.<br> ESLC0042 -\
+            \ Não existe adesao para essa funcionalidade.<br> ESLC0118 - Participante\
+            \ não cadastrado no SLC.<br> ESLC0119 - Participante Administrado não\
+            \ é administrado pelo Participante Principal.<br> ESLC0123 - Participante\
+            \ não aderiu a funcionalidade."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/bancos/relatorios/detalhado-por-nuliquid:
+    post:
+      x-cip:
+        funcionalidades: "SLC0909"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas instituições domicílio)"
+      summary: "SLC0909, síncrono"
+      description: "Solicita relatorio detalhado por NULiquid"
+      operationId: "getRelatorioBancosDetalhadoPorNULiquid"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0909Request"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GrupoRelatorioDetalhadoPorNULiquid"
+              examples:
+                Exemplo1:
+                  value:
+                    numCtrlRelat: 12345678901234567890
+                    cNPJCreddr: 12345678901234
+                    nomRedzdCred: "Nome da Credenciadora"
+                    iSPBIFDomicilio: 12345678
+                    nomRedzdID: "Nome da Instituicao Domicilio"
+                    dtRef: "2022-01-05"
+                    dtPgto: "2022-01-05"
+                    nULiquid: 123456789012345678901
+                    vlrPgto: 1.2345678901234568E16
+                    codInstitdrArranjoPgto: "001"
+                    nomInstitdrArranjoPgto: "Nome Instituidor Arranjo Pagamento"
+                    tpProd: "Tipo do Produto"
+                    sitSolictLiquidacao: "Descricao da situacao de solicitacao de\
+                      \ Liquidacao do lancamento"
+                    sitRespDomicilio: "Descricao da situacao da resposta da Instituicao\
+                      \ Domicílio"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. <b><u>Valores\
+            \ possiveis:</u></b><br> ESLC0024 - Requisição enviada fora da grade horá\
+            ria.<br> ESLC0041 - Não existe grade horaria associada.<br> ESLC0042 -\
+            \ Não existe adesao para essa funcionalidade.<br> ESLC0118 - Participante\
+            \ não cadastrado no SLC.<br> ESLC0119 - Participante Administrado não\
+            \ é administrado pelo Participante Principal.<br> ESLC0123 - Participante\
+            \ não aderiu a funcionalidade."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/bancos/relatorios/consulta-cadastro-em-arranjo:
+    get:
+      x-cip:
+        funcionalidades: "SLC0911"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas instituições domicílio)"
+      summary: "SLC0911, síncrono"
+      description: "Solicita a consulta dos arranjos em que a contraparte esta cadastrada"
+      operationId: "getConsultaCadastroEmArranjoBancos"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - name: "iSPBContraparte"
+        in: "query"
+        description: "ISPB Contraparte"
+        required: true
+        schema:
+          type: "string"
+          pattern: "^\\d{8}$"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ConsultaCadastroEmArranjo"
+              examples:
+                Exemplo1:
+                  value:
+                    iSPBContraparte: 12345678
+                    arranjosPgto:
+                    - codInstitdrArranjoPgto: "001"
+                      nomInstitdrArranjoPgto: "Nome Instituidor Arranjo Pagamento"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. <b><u>Valores\
+            \ possiveis:</u></b><br> ESLC0024 - Requisição enviada fora da grade horá\
+            ria.<br> ESLC0041 - Não existe grade horaria associada.<br> ESLC0042 -\
+            \ Não existe adesao para essa funcionalidade.<br> ESLC0118 - Participante\
+            \ não cadastrado no SLC.<br> ESLC0119 - Participante Administrado não\
+            \ é administrado pelo Participante Principal.<br> ESLC0123 - Participante\
+            \ não aderiu a funcionalidade."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/liquidacoes-antecipacao:
+    post:
+      x-cip:
+        funcionalidades: "SLC0912"
+        operacao: "Incluir"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0912, assíncrono, inclusão de antecipação de liquidação"
+      description: "Solicita a inclusão de uma antecipação de liquidação de antecipaç\
+        ão de crédito - ref SLC0912"
+      operationId: "incluirAntecipacao"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0912Request"
+      responses:
+        "202":
+          description: "Accepted - Requisição aceita para processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ControleLiquidacao"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0102 | CNPJ Base Credenciador diferente do cadastrado\
+            \ no SLC\nESLC0103 | CNPJ Credenciador diferente do cadastrado no SLC\n\
+            ESLC0106 | IF credora sem adesão a funcionalidade: liquidações das transaç\
+            ões de cartões de crédito\nESLC0110 | IF credora sem adesão a funcionalidade:\
+            \ liquidações das transações de cartões de débito\nESLC0118 | Participante\
+            \ não cadastrado no SLC\nESLC0119 | Participante Administrado não é administrado\
+            \ pelo Participante Principal\nESLC0122 | ISPB informado não possui relacionamento\
+            \ com o Credenciador\nESLC0123 | Participante não aderiu a funcionalidade\n\
+            ESLC0126 | Campo obrigatório não preenchido\nESLC0131 | ISPB do Emissor\
+            \ não pode ser diferente do Identificador do Participante Principal\n\
+            ESLC0133 | ISPB Devedora informada não está vigente\nESLC0141 | CNPJ Base\
+            \ do Credenciador informado divergente do informado na tag do Participante\
+            \ Administrado\nESLC0148 | ISPB IF Credora não possui liquidante\nELSC0161\
+            \ | Não é permitido envio de requisições HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/liquidacoes-debito:
+    post:
+      x-cip:
+        funcionalidades: "SLC0913"
+        operacao: "Incluir"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0913, assíncrono, inclusão de liquidação de débito"
+      description: "Solicita a inclusão de liquidação de débito - ref SLC0913"
+      operationId: "incluirDebito"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0913Request"
+      responses:
+        "202":
+          description: "Accepted - Requisição aceita para processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ControleLiquidacao"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0102 | CNPJ Base Credenciador diferente do cadastrado\
+            \ no SLC\nESLC0103 | CNPJ Credenciador diferente do cadastrado no SLC\n\
+            ESLC0106 | IF credora sem adesão a funcionalidade: liquidações das transaç\
+            ões de cartões de crédito\nESLC0110 | IF credora sem adesão a funcionalidade:\
+            \ liquidações das transações de cartões de débito\nESLC0118 | Participante\
+            \ não cadastrado no SLC\nESLC0119 | Participante Administrado não é administrado\
+            \ pelo Participante Principal\nESLC0122 | ISPB informado não possui relacionamento\
+            \ com o Credenciador\nESLC0123 | Participante não aderiu a funcionalidade\n\
+            ESLC0126 | Campo obrigatório não preenchido\nESLC0131 | ISPB do Emissor\
+            \ não pode ser diferente do Identificador do Participante Principal\n\
+            ESLC0133 | ISPB Devedora informada não está vigente\nESLC0141 | CNPJ Base\
+            \ do Credenciador informado divergente do informado na tag do Participante\
+            \ Administrado\nESLC0148 | ISPB IF Credora não possui liquidante\nELSC0161\
+            \ | Não é permitido envio de requisições HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/liquidacoes-credito:
+    post:
+      x-cip:
+        funcionalidades: "SLC0914"
+        operacao: "Incluir"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0914, assíncrono, inclusão de liquidação de credito"
+      description: "Solicita a inclusão de liquidação de credito - ref SLC0914"
+      operationId: "incluirCredito"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0914Request"
+      responses:
+        "202":
+          description: "Accepted - Requisição aceita para processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ControleLiquidacao"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0102 | CNPJ Base Credenciador diferente do cadastrado\
+            \ no SLC\nESLC0103 | CNPJ Credenciador diferente do cadastrado no SLC\n\
+            ESLC0106 | IF credora sem adesão a funcionalidade: liquidações das transaç\
+            ões de cartões de crédito\nESLC0110 | IF credora sem adesão a funcionalidade:\
+            \ liquidações das transações de cartões de débito\nESLC0118 | Participante\
+            \ não cadastrado no SLC\nESLC0119 | Participante Administrado não é administrado\
+            \ pelo Participante Principal\nESLC0122 | ISPB informado não possui relacionamento\
+            \ com o Credenciador\nESLC0123 | Participante não aderiu a funcionalidade\n\
+            ESLC0126 | Campo obrigatório não preenchido\nESLC0131 | ISPB do Emissor\
+            \ não pode ser diferente do Identificador do Participante Principal\n\
+            ESLC0133 | ISPB Devedora informada não está vigente\nESLC0141 | CNPJ Base\
+            \ do Credenciador informado divergente do informado na tag do Participante\
+            \ Administrado\nESLC0148 | ISPB IF Credora não possui liquidante\nELSC0161\
+            \ | Não é permitido envio de requisições HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/liquidacoes/{numCtrlCip}/processamento:
+    get:
+      x-cip:
+        funcionalidades: "SLC0915"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas credenciadoras / sub-credenciadoras)"
+      summary: "SLC0915, síncrono, consulta de resultado da solicitação de liquidaç\
+        ão"
+      description: "Consulta o resultado da solicitação de liquidação através do nú\
+        mero de controle CIP"
+      operationId: "obterResultadoLiquidacao"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - $ref: "#/components/parameters/pNumCtrlCip"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/SLC0915Response"
+              example:
+                situacao: "F"
+                dtHrUltAlt: "2022-01-05T10:00:00Z"
+                grupoPontoVendaActo:
+                - numCtrlCreddrPontoVenda: "12345678901234567890"
+                  nuLiquid: "123456789012345678901"
+                grupoPontoVendaRecsdo:
+                - numCtrlCreddrPontoVenda: "12345678901234567891"
+                  atrbtErr: "GrupoPontoVenda.DtPgto"
+                  codErro: "ESLC0128"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0118 | Participante não cadastrado no SLC\nESLC0119\
+            \ | Participante Administrado não é administrado pelo Participante Principal\n\
+            ESLC0123 | Participante não aderiu a funcionalidade\nESLC0126 | Campo\
+            \ obrigatório não preenchido\nELSC0161 | Não é permitido envio de requisiç\
+            ões HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/ferramentas/bandeiras/eco:
+    get:
+      x-cip:
+        funcionalidade: "SLC0802"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas Bandeiras)"
+      summary: "SLC0802, síncrono, resultado único"
+      description: "Ferramenta de eco para as Bandeiras"
+      operationId: "getBandeirasEco"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - $ref: "#/components/parameters/pqtMsgEco"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Eco"
+              examples:
+                ExemploEco:
+                  value:
+                    msg: "XYXYXYXYXYXYXYXXY"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b>Valores\
+            \ possiveis:</b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/arranjos-pagamentos:
+    post:
+      x-cip:
+        funcionalidades: "SLC0930"
+        operacao: "Incluir"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas IAP)"
+      summary: "SLC0930, assíncrono, inclusão de arranjos de pagamentos"
+      description: "Solicita a inclusão de arranjos de pagamentos - ref SLC0930"
+      operationId: "incluirArranjosPagamentos"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0930Request"
+      responses:
+        "202":
+          description: "Accepted - Requisição aceita para processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/ControleArranjo"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nE00105 | Não há ciclo\
+            \ aberto para a data de liquidação informada\nE00002 | Data de referê\
+            ncia inválida\nE00002 | Data da Liquidação inválida\nE00004 | Código de\
+            \ produto não cadastrado\nE00005 | Participante não aderiu ao produto\n\
+            E00100 | Arranjo não encontrado para o produto informado\nE00007 | ISPB\
+            \ diferente do SILOC (02992335)\nE00009 | Não há adesão para o idCipCliente\
+            \ informado\nE00050 | Sem relação entre principal e administrado\nE00012\
+            \ | ISPB não cadastrado\nE00102 | ISPB não cadastrado como liquidante\n\
+            E00104 | ISPB não cadastrado no arranjo\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nE00006 | Cabeçalho\
+            \ inválido\nEGEN1017 | Certificado invalido\nEGEN1104 | Chave invalida\n\
+            EGEN9905 | Algoritmo da chave de assinatura invalido\nEGEN9910 | Numero\
+            \ de serie do certificado da assinatura invalido\nEGEN9911 | Assinatura\
+            \ da Mensagem invalida\nEGEN9920 | Certificado nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN023\
+            \ | conteudo invalido\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/arranjos-pagamentos/{numCtrlCip}/processamento:
+    get:
+      x-cip:
+        funcionalidades: "SLC0931"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas IAP)"
+      summary: "SLC0931, síncrono, consulta de situacao arranjos de pagamentos"
+      description: "Consulta o resultado da solicitação de arranjos de pagamentos\
+        \ através do número de controle CIP"
+      operationId: "obterResultadoArranjosPagamentos"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      - $ref: "#/components/parameters/pNumCtrlCip"
+      responses:
+        "200":
+          description: "OK - Requisição processada."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/SLC0931Response"
+              example:
+                situacao: "F"
+                dtHrUltAlt: "2022-01-05T10:00:00Z"
+                grupoLiquidacaoIapBilateralActo:
+                - numCtrlBandeira: "ABC123"
+                  nuLiquid: "123456789012345678901"
+                  numeroControleCIP: "12345678901234567890"
+                grupoLiquidacaoIapBilateralRecsdo:
+                - numCtrlBandeira: "ABC124"
+                  atrbtErro: "numCtrlBandeira"
+                  codErro: "E00111"
+                  numeroControleCIP: "12345678901234567890"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "204":
+          description: "No Content - Requisição processada."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0118 | Participante não cadastrado no SLC\nESLC0119\
+            \ | Participante Administrado não é administrado pelo Participante Principal\n\
+            ESLC0123 | Participante não aderiu a funcionalidade\nESLC0126 | Campo\
+            \ obrigatório não preenchido\nELSC0161 | Não é permitido envio de requisiç\
+            ões HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "404":
+          description: "Not Found - Recurso não encontrado."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+  /v1/arranjos-pagamentos/consulta-status-liquidacao:
+    post:
+      x-cip:
+        funcionalidades: "SLC0932"
+        operacao: "Incluir"
+        requirements: "JWS"
+      tags:
+      - "Serviços Núclea (apenas IAP)"
+      summary: "SLC0932, consulta de status de liquidação"
+      description: "Solicita os status de liquidação a partir dos NULiquids ou do\
+        \ Numero de controle do SLC - ref SLC0932"
+      operationId: "getConsultaStatusLiquidacao"
+      parameters:
+      - $ref: "#/components/parameters/xJwsSignature"
+      - $ref: "#/components/parameters/phAcceptEncoding"
+      - $ref: "#/components/parameters/phContentEncoding"
+      requestBody:
+        $ref: "#/components/requestBodies/SLC0932Request"
+      responses:
+        "202":
+          description: "Accepted - Requisição aceita para processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/SLC0932Response"
+              example:
+                GrupoLiquidacaoIapBilateralEncontrado:
+                  liquidacaoIapBilateralEncontrado:
+                  - ispbPrincipal: "23232323"
+                    ispbAdministrado: "23232323"
+                    cnpjPrincipal: "34324323066408"
+                    cnpjAdministrado: "34324323066408"
+                    codArranjo: "MCC"
+                    nuLiquid: "123456789012345678901"
+                    numeroControleCIP: "12345678901234567890"
+                    dtRef: "2010-11-30"
+                    dtPgto: "2010-11-30"
+                    vlrPgto: 35648.15
+                    sitSolictLiquidacao: "Liquidado"
+                    numCtrlBandeira: "73487084703"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "400":
+          description: "Bad Request - Erro durante o processamento. \n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nESLC0024 | Requisiç\
+            ão enviada fora da grade horária\nESLC0042 | Não existe adesão para essa\
+            \ funcionalidade\nESLC0102 | CNPJ Base Credenciador diferente do cadastrado\
+            \ no SLC\nESLC0103 | CNPJ Credenciador diferente do cadastrado no SLC\n\
+            ESLC0106 | IF credora sem adesão a funcionalidade: liquidações das transaç\
+            ões de cartões de crédito\nESLC0110 | IF credora sem adesão a funcionalidade:\
+            \ liquidações das transações de cartões de débito\nESLC0118 | Participante\
+            \ não cadastrado no SLC\nESLC0119 | Participante Administrado não é administrado\
+            \ pelo Participante Principal\nESLC0122 | ISPB informado não possui relacionamento\
+            \ com o Credenciador\nESLC0123 | Participante não aderiu a funcionalidade\n\
+            ESLC0126 | Campo obrigatório não preenchido\nESLC0131 | ISPB do Emissor\
+            \ não pode ser diferente do Identificador do Participante Principal\n\
+            ESLC0133 | ISPB Devedora informada não está vigente\nESLC0141 | CNPJ Base\
+            \ do Credenciador informado divergente do informado na tag do Participante\
+            \ Administrado\nESLC0148 | ISPB IF Credora não possui liquidante\nELSC0161\
+            \ | Não é permitido envio de requisições HTTP para participante administrado.\n"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "401":
+          description: "Unauthorized - Dados do cabeçalho incorretos. Favor verificar\
+            \ se o cabeçalho x-jws-signature foi devidamente preenchido.\n\n**Valores\
+            \ possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1017 | Certificado\
+            \ invalido\nEGEN1104 | Chave invalida\nEGEN9905 | Algoritmo da chave de\
+            \ assinatura invalido\nEGEN9910 | Numero de serie do certificado da assinatura\
+            \ invalido\nEGEN9911 | Assinatura da Mensagem invalida\nEGEN9920 | Certificado\
+            \ nao encontrado\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "403":
+          description: "Forbidden - Participante não tem adesão para esta funcionalidade.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> ERRC0015 - Não existe adesão para\
+            \ essa funcionalidade."
+          content: {}
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "412":
+          description: "Precondiction Failed - Dados da requisição inconsistentes.\n\
+            \n**Valores possiveis:**\n**Erro** | **Descrição**\n--- | ---\nEGEN1009\
+            \ | Data informada diferente da data de referência do Sistema\nEGEN0001\
+            \ | Formato JSON invalido\nEGEN0011 | Codigo do identificador da requisiç\
+            ão ja registrado\nEGEN0012 | Codigo do identificador da requisição nao\
+            \ confere com ISPB\nEGEN0013 | Codigo do identificador da requisição invalido\n\
+            EGEN0017 | Campo obrigatorio ausente\nEGEN0019 | Tipo ID emissor ausente/invalido\n\
+            EGEN0023 | Conteudo invalido\nEGEN0034 | Codificacao de caracteres invalida\n\
+            EGEN0037 | Formato invalido zip\nEGEN0043 | Erro na validação do JSON\n\
+            EGEN0061 | Caracter invalido\nEGEN0062 | Codificacao de caracteres invalida\n\
+            EGEN0085 | Tamanho de Mensagem invalido\nEGEN1009 | Data Movimento invalida\n\
+            EGEN9912 | Identificação do Emissor invalida\n"
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "413":
+          description: "Payload Too Large - Tamanho do Payload excedeu o limite suportado.<br><br>\
+            \ <b><u>Valores possiveis:</u></b><br> EGEN0024 - Tamanho do arquivo invalido."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+        "500":
+          description: "Internal Server Error - Erro inesperado.<br><br> <b><u>Valores\
+            \ possiveis:</u></b><br> EGEN0050 - Erro no processamento."
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/Erro"
+          headers:
+            x-jws-signature:
+              $ref: "#/components/headers/xJwsSignature"
+            Content-Encoding:
+              $ref: "#/components/headers/phContentEncoding"
+components:
+  requestBodies:
+    SLC0908Request:
+      description: "SLC0908 - Incluir solicitação de antecipação"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0908"
+          examples:
+            GrupoSLC0908:
+              value:
+                nuLiquids:
+                - nuLiquid: "123456789012345678901"
+    SLC0909Request:
+      description: "SLC0909 - Incluir solicitação de antecipação"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0909"
+          examples:
+            GrupoSLC0908:
+              value:
+                nuLiquids:
+                - nuLiquid: "123456789012345678901"
+    SLC0912Request:
+      description: "SLC0912 - Incluir solicitação de antecipação"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0912LiquidTranscCarts"
+          examples:
+            LiquidacaoAntecipacao:
+              value:
+                cnpjBaseCreddr: "12345678"
+                cnpjCreddr: "12345678901234"
+                ispbIfDevdr: "10066408"
+                ispbIfCredr: "01234567"
+                agCreddr: "0002"
+                ctCreddr: 2345678900
+                nomCreddr: "&amp;&gt;&lt; Nome do Credenciador"
+                grupoSLC0912Centrlz:
+                  numCtrlCreddrCentrlz: "12345678901234567890"
+                  tpPessoaCentrlz: "J"
+                  cnpjCpfCentrlz: "12345678901234"
+                  codCentrlz: "1234567891234567891236548"
+                  tpCt: "CC"
+                  agCentrlz: "1234"
+                  ctCentrlz: 12345678
+                  ctPgtoCentrlz: null
+                  grupoSLC0912PontoVenda:
+                  - numCtrlCreddrPontoVenda: "12345678901234567890"
+                    ispbIfLiquidPontoVenda: "12345678"
+                    codPontoVenda: "1234567890123456789012345"
+                    nomePontoVenda: "Nome do Ponto de Venda"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "28218955000139"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                    formaPgto: ""
+                    numCtrlPgto: ""
+                  - numCtrlCreddrPontoVenda: "12345678901234567892"
+                    ispbIfLiquidPontoVenda: "12345678"
+                    codPontoVenda: "1234567890123456789012346"
+                    nomePontoVenda: "Nome do Ponto de Venda 2"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "44692158000145"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                    formaPgto: null
+                    numCtrlPgto: null
+                  - numCtrlCreddrPontoVenda: "12345678901234567893"
+                    ispbIfLiquidPontoVenda: "12345679"
+                    codPontoVenda: "002"
+                    nomePontoVenda: "Nome do Ponto de Venda 05"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "59585385000149"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 100000000000000000
+                    formaPgto: "1"
+                    numCtrlPgto: "1234567890123456789312345678901234567893"
+    SLC0913Request:
+      description: "SLC0913 - Incluir solicitação de débito"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0913LiquidTranscCarts"
+          examples:
+            LiquidacaoDebito:
+              value:
+                cnpjBaseCreddr: "12345678"
+                cnpjCreddr: "12345678901234"
+                ispbIfDevdr: "13066408"
+                ispbIfCredr: "01234567"
+                agCreddr: "0002"
+                ctCreddr: 2345678900
+                nomCreddr: "&amp;&gt;&lt; Nome do Credenciador"
+                grupoSLC0913Centrlz:
+                  numCtrlCreddrCentrlz: "12345678901234567890"
+                  tpPessoaCentrlz: "J"
+                  cnpjCpfCentrlz: "12345678901234"
+                  codCentrlz: "12345123451234512345"
+                  tpCt: "CC"
+                  agCentrlz: "1234"
+                  ctCentrlz: 12345678
+                  ctPgtoCentrlz: null
+                  grupoSLC0913PontoVenda:
+                  - numCtrlCreddrPontoVenda: "12345678901234567890"
+                    ispbIfLiquidPontoVenda: "12345678"
+                    codPontoVenda: "1234567890123456789012345"
+                    nomePontoVenda: "Nome do Ponto de Venda"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "28218955000139"
+                    codInstitdrArrajPgto: "025"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                  - numCtrlCreddrPontoVenda: "12345678901234567892"
+                    ispbIfLiquidPontoVenda: "12345678"
+                    codPontoVenda: "1234567890123456789012345"
+                    nomePontoVenda: "Nome do Ponto de Venda 2"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "44692158000145"
+                    codInstitdrArrajPgto: "025"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                  - numCtrlCreddrPontoVenda: "12345678901234567893"
+                    ispbIfLiquidPontoVenda: "12345679"
+                    codPontoVenda: "002"
+                    nomePontoVenda: "Nome do Ponto de Venda 05"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "59585385000149"
+                    codInstitdrArrajPgto: "025"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 100000000000000000
+    SLC0914Request:
+      description: "SLC0914 - Incluir solicitação de crédito"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0914LiquidTranscCarts"
+          examples:
+            LiquidacaoCredito:
+              value:
+                cnpjBaseCreddr: "12345678"
+                cnpjCreddr: "12345678901234"
+                ispbIfDevdr: "10066408"
+                ispbIfCredr: "01234567"
+                agCreddr: "0002"
+                ctCreddr: 2345678900
+                nomCreddr: "&amp;&gt;&lt; Nome do Credenciador"
+                grupoSLC0914Centrlz:
+                  numCtrlCreddrCentrlz: "12345678901234567890"
+                  tpPessoaCentrlz: "J"
+                  cnpjCpfCentrlz: "12345678901234"
+                  codCentrlz: "12345123451234512345"
+                  tpCt: "CC"
+                  agCentrlz: "1234"
+                  ctCentrlz: 12345678
+                  ctPgtoCentrlz: null
+                  grupoSLC0914PontoVenda:
+                  - numCtrlCreddrPontoVenda: "12345678901234567891"
+                    ispbIfLiquidPontoVenda: "12345677"
+                    codPontoVenda: "1234567890123456789012345"
+                    nomePontoVenda: "Nome do Ponto de Venda"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "28218955000139"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                  - numCtrlCreddrPontoVenda: "12345678901234567892"
+                    ispbIfLiquidPontoVenda: "12345678"
+                    codPontoVenda: "1234567890123456789012346"
+                    nomePontoVenda: "Nome do Ponto de Venda 2"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "44692158000145"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 9.999999999999998E13
+                  - numCtrlCreddrPontoVenda: "12345678901234567893"
+                    ispbIfLiquidPontoVenda: "12345679"
+                    codPontoVenda: "002"
+                    nomePontoVenda: "Nome do Ponto de Venda 05"
+                    tpPessoaPontoVenda: "J"
+                    cnpjCpfPontoVenda: "59585385000149"
+                    codInstitdrArrajPgto: "003"
+                    tpProdLiquidCarts: "01"
+                    indrFormaTransf: "3"
+                    codMoeda: "001"
+                    tpPontoVenda: "EC"
+                    tpVlrPgto: "MP"
+                    dtPgto: "2024-07-20"
+                    vlrPgto: 100000000000000000
+    SLC0930Request:
+      description: "SLC0930 - Incluir arranjos de pagamentos"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0930ArranjoPgto"
+          examples:
+            LiquidacaoCredito:
+              value:
+                dtRef": "2010-11-30"
+                dtPgto": "2010-11-30"
+                codIdentNuclea": "02992335"
+                codIdentIAP": "01248201"
+                ispbPrincipal": "23232323"
+                cnpjPrincipal": "34324323066408"
+                codArranjo": "MCC"
+                grupoSLC0930LiquidacaoIapBilateral:
+                - vlrPgto: 35648.15
+                  qtdPgto: 535
+                  ispbIfCreddr: "12345678"
+                  ispbIfDevdr: "87654321"
+                  codigoIdentCreddr: 15222
+                  codigoIdentDevdr: 27430
+                  cnpjCreddr: "22222222222222"
+                  cnpjDevdr: "47563676000165"
+                  nomCreddr: "DINDIM SOLUCOES DE PAGAMENTO SA"
+                  nomDevdr: "SEM DINDIM PAGAMENTOS SA"
+                  numCtrlBandeira: 73487084703
+                - vlrPgto: 2343.15
+                  qtdPgto: 543
+                  ispbIfCreddr: "01010101"
+                  ispbIfDevdr: "20202020"
+                  codigoIdentCreddr: 15576
+                  codigoIdentDevdr: 24444
+                  cnpjCreddr: "33333333333333"
+                  cnpjDevdr: "65768238848234"
+                  nomCreddr: "BUFUNFA SOLUCOES DE PAGAMENTO SA"
+                  nomDevdr: "QUEBRADO PAGAMENTOS SA"
+                  numCtrlBandeira: 73487084704
+    SLC0932Request:
+      description: "SLC0932 - Consulta status de liquidação"
+      required: true
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: "#/components/schemas/GrupoSLC0932"
+          examples:
+            GrupoSLC0932:
+              value:
+                numCtrlCIP": "123456789012345678901"
+  schemas:
+    Erro:
+      type: "object"
+      properties:
+        dataHora:
+          type: "string"
+          description: "Data/hora. Representado conforme ISO 8601 formato \"date-time\""
+          format: "date-time"
+        mensagens:
+          type: "array"
+          description: "Mensagens."
+          items:
+            $ref: "#/components/schemas/MessageListArrayOutput"
+    MessageListArrayOutput:
+      type: "object"
+      properties:
+        codigo:
+          type: "string"
+          description: "Código da Mensagem."
+        conteudo:
+          type: "string"
+          description: "Conteudo do campo que esta com erro."
+        campo:
+          type: "string"
+          description: "Campo que esta com erro."
+        mensagem:
+          type: "string"
+          description: "Descrição da mensagem"
+    Eco:
+      type: "object"
+      properties:
+        msg:
+          type: "string"
+          description: "Mensagem de eco"
+          minLength: 1
+          maxLength: 50
+    RelatorioDetalhadoPorNULiquid:
+      type: "object"
+      required:
+      - "numCtrlRelat"
+      - "cNPJCreddr"
+      - "nomRedzdCred"
+      - "iSPBIFDomicilio"
+      - "nomRedzdID"
+      - "dtRef"
+      - "dtPgto"
+      - "nULiquid"
+      - "vlrPgto"
+      - "codInstitdrArranjoPgto"
+      - "nomInstitdrArranjoPgto"
+      - "tpProd"
+      - "sitSolictLiquidacao"
+      - "sitRespDomicilio"
+      - "codOcorc"
+      properties:
+        numCtrlRelat:
+          type: "string"
+          description: "Numero de controle da solicitacao do relatorio"
+          pattern: "^\\d{20}$"
+        cNPJCreddr:
+          type: "string"
+          description: "CNPJ Credenciador"
+          pattern: "^\\d{14}$"
+        nomRedzdCred:
+          type: "string"
+          description: "Nome Reduzido do Credenciador"
+          minLength: 1
+          maxLength: 80
+        iSPBIFDomicilio:
+          type: "string"
+          description: "ISPB IF Domicilio"
+          pattern: "^\\d{8}$"
+        nomRedzdID:
+          type: "string"
+          description: "Nome Reduzido da Instituicao Domicilio"
+          minLength: 1
+          maxLength: 80
+        dtRef:
+          type: "string"
+          description: "Data de Referencia"
+          format: "date"
+        dtPgto:
+          type: "string"
+          description: "Data de Pagamento"
+          format: "date"
+        nULiquid:
+          type: "string"
+          description: "Numero Unico da Transacao"
+          pattern: "^\\d{21}$"
+        vlrPgto:
+          type: "number"
+          description: "Valor do Pagamento"
+          format: "double"
+        codInstitdrArranjoPgto:
+          type: "string"
+          description: "Codigo Instituidor Arranjo Pagamento"
+          pattern: "^\\d{3}$"
+        nomInstitdrArranjoPgto:
+          type: "string"
+          description: "Nome Instituidor Arranjo Pagamento"
+          minLength: 1
+          maxLength: 30
+        tpProd:
+          type: "string"
+          description: "Descricao do Tipo do Produto"
+          minLength: 1
+          maxLength: 15
+        sitSolictLiquidacao:
+          type: "string"
+          description: "Situacao da Solicitacao da Liquidacao"
+          minLength: 1
+          maxLength: 60
+        sitRespDomicilio:
+          type: "string"
+          description: "Situacao da Resposta da Instituicao Domicilio"
+          minLength: 1
+          maxLength: 50
+        codOcorc:
+          type: "string"
+          description: "Codigo de Ocorrencia"
+          minLength: 2
+          maxLength: 2
+    GrupoRelatorioDetalhadoPorNULiquid:
+      type: "object"
+      required:
+      - "relatorioDetalhadoPorNULiquid"
+      properties:
+        numCtrlCip:
+          $ref: "#/components/schemas/numCtrlCip"
+        relatorioDetalhadoPorNULiquid:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RelatorioDetalhadoPorNULiquid"
+    ConsultaCadastroEmArranjo:
+      type: "object"
+      required:
+      - "iSPBContraparte"
+      - "codInstitdrArranjoPgto"
+      - "nomInstitdrArranjoPgto"
+      properties:
+        iSPBContraparte:
+          type: "string"
+          description: "ISPB contraparte"
+          pattern: "^\\d{8}$"
+        arranjosPgto:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              nomInstitdrArranjoPgto:
+                type: "string"
+                description: "Nome Instituidor Arranjo Pagamento"
+                minLength: 1
+                maxLength: 30
+              codInstitdrArranjoPgto:
+                type: "string"
+                description: "Codigo Instituidor Arranjo Pagamento"
+                pattern: "^\\d{3}$"
+          description: "grupo de arranjos"
+    GrupoLiquidTranscCarts:
+      type: "object"
+      required:
+      - "cnpjBaseCreddr"
+      - "cnpjCreddr"
+      - "ispbIfDevdr"
+      - "ispbIfCredr"
+      - "nomCreddr"
+      description: "Grupo Liquidação Transações Cartões"
+      properties:
+        cnpjBaseCreddr:
+          type: "string"
+          description: "CNPJ Base Credeciador."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        cnpjCreddr:
+          type: "string"
+          description: "CNPJ Credenciador."
+          pattern: "^\\d{14}$"
+        ispbIfDevdr:
+          type: "string"
+          description: "ISPB IF Devedor."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        ispbIfCredr:
+          type: "string"
+          description: "ISPB IF Credora."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        agCreddr:
+          type: "string"
+          description: "Agência Credenciador. Número da agência do domicílio bancá\
+            rio, sem o dígito verificador."
+          maxLength: 4
+          pattern: "^\\b[0-9]{4}$"
+        ctCreddr:
+          type: "integer"
+          format: "int64"
+          description: "Conta do credor. Número da conta bancária, com dígito verificador.\
+            \ Se o dígito verificador for alfa, deverá ser substituído por \"0\" (zero)."
+          maximum: 9999999999999
+        nomCreddr:
+          type: "string"
+          description: "Nome Credenciador"
+          minLength: 1
+          maxLength: 80
+          pattern: "^(?!\\\\s*$).+"
+    GrupoCentrlz:
+      type: "object"
+      description: "Grupo Centralizadora"
+      required:
+      - "numCtrlCreddrCentrlz"
+      - "tpPessoaCentrlz"
+      - "cnpjCpfCentrlz"
+      - "codCentrlz"
+      properties:
+        numCtrlCreddrCentrlz:
+          type: "string"
+          description: "Numero Controle Credenciador Centralizadora."
+          minLength: 1
+          maxLength: 20
+        tpPessoaCentrlz:
+          type: "string"
+          description: "Tipo Pessoa Centralizadora."
+          minLength: 1
+          maxLength: 1
+        cnpjCpfCentrlz:
+          type: "string"
+          description: "CNPJ ou CPF da centralização. Número de Identificação da Pessoa\
+            \ Jurídica no Cadastro Nacional de Pessoa Jurídica ou o Número no Cadastro\
+            \ de Pessoa Física. No caso de transferência para pessoas isentas de CNPJ\
+            \ ou CPF, o campo CNPJ ou CPF deve ser preenchido com zero."
+          minLength: 0
+          maxLength: 14
+          pattern: "^(\\d{11}|[0-9A-Z]{12}[0-9]{2})$"
+        codCentrlz:
+          type: "string"
+          description: "Código da Centralizadora."
+          maxLength: 25
+        tpCt:
+          type: "string"
+          description: "Tipo Conta. Indica tipo de conta do cliente."
+          minLength: 2
+          maxLength: 2
+        agCentrlz:
+          type: "string"
+          description: "Agência Centralizadora. Número da agência do domicílio bancá\
+            rio, sem o dígito verificador."
+          maxLength: 4
+          pattern: "^[0-9]{0,4}$"
+        ctCentrlz:
+          type: "integer"
+          format: "int64"
+          description: "Conta Centralizadora. Número da conta bancária, com dígito\
+            \ verificador. Se o dígito verificador for alfa, deverá ser substituí\
+            do por \"0\" (zero)."
+          maximum: 9999999999999
+        ctPgtoCentrlz:
+          type: "integer"
+          format: "int64"
+          description: "Conta Pagamento Centralizadora. Número da conta de pagamento\
+            \ na instituição de pagamento emissora de moeda eletrônica ou de instrumento\
+            \ de pagamento pré-pago."
+          maximum: 99999999999999999999
+    GrupoPontoVenda:
+      type: "object"
+      description: "Ponto de Venda (PV)"
+      required:
+      - "numCtrlCreddrPontoVenda"
+      - "ispbIfLiquidPontoVenda"
+      - "codPontoVenda"
+      - "nomePontoVenda"
+      - "tpPessoaPontoVenda"
+      - "cnpjCpfPontoVenda"
+      - "codInstitdrArrajPgto"
+      - "tpProdLiquidCarts"
+      - "indrFormaTransf"
+      - "codMoeda"
+      - "tpPontoVenda"
+      - "tpVlrPgto"
+      - "dtPgto"
+      - "vlrPgto"
+      properties:
+        numCtrlCreddrPontoVenda:
+          $ref: "#/components/schemas/numCtrlCreddrPontoVenda"
+        ispbIfLiquidPontoVenda:
+          type: "string"
+          description: "ISPB IF Liquidação Ponto Venda. Primeiras 8 posicões do CNPJ."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        codPontoVenda:
+          type: "string"
+          description: "Código Ponto Venda (PV)"
+          maxLength: 25
+        nomePontoVenda:
+          type: "string"
+          description: "Nome do Ponto Venda (PV)"
+          minLength: 1
+          maxLength: 80
+        tpPessoaPontoVenda:
+          type: "string"
+          description: "Tipo Pessoa Ponto de Venda. Tipo de Pessoa Destinatário."
+          minLength: 1
+          maxLength: 1
+        cnpjCpfPontoVenda:
+          type: "string"
+          description: "CNPJ ou CPF do Ponto de Venda. Número de Identificação da\
+            \ Pessoa Jurídica no Cadastro Nacional de Pessoa Jurídica ou o Número\
+            \ no Cadastro de Pessoa Física. No caso de transferência para pessoas\
+            \ isentas de CNPJ ou CPF, o campo CNPJ ou CPF deve ser preenchido com\
+            \ zero."
+          minLength: 0
+          maxLength: 14
+          pattern: "^(\\d{11}|[0-9A-Z]{12}[0-9]{2})$"
+        codInstitdrArrajPgto:
+          type: "string"
+          description: "Código Instituidor Arranjo Pagamento."
+          minLength: 3
+          maxLength: 3
+        tpProdLiquidCarts:
+          type: "string"
+          description: "Tipo Produto Liquidação de Cartões."
+          minLength: 2
+          maxLength: 2
+        indrFormaTransf:
+          type: "string"
+          description: "Indicador Forma Transferência"
+          minLength: 1
+          maxLength: 1
+        codMoeda:
+          type: "string"
+          description: "Código Moeda"
+          pattern: "^\\b[0-9]{3}$"
+        tpPontoVenda:
+          type: "string"
+          description: "Tipo de Ponto Venda"
+          minLength: 2
+          maxLength: 2
+        tpVlrPgto:
+          type: "string"
+          description: "Tipo Valor Pagamento"
+          minLength: 2
+          maxLength: 2
+        formaPgto:
+          type: "string"
+          description: "Forma de Pagamento."
+          maxLength: 10
+        numCtrlPgto:
+          type: "string"
+          description: "Número Controle Pagamento."
+          maxLength: 40
+        dtPgto:
+          type: "string"
+          description: "Data Pagamento. Ano, mês e dia no formato AAAA-MM-DD, onde\
+            \ AAAA = ano, MM = mês, DD = dia"
+        vlrPgto:
+          type: "number"
+          description: "Valor Pagamento. Valor. Até dezessete inteiros e dois decimais\
+            \ e sinalizado. Para valores menores que zero, o valor sera precedido\
+            \ pelo sinal '-'. Exemplos - para 20 negativo informe -20. Deve ser informado\
+            \ o ponto separador caso tenha decimais; - para R$100,00 informe 100;\
+            \ para R$100,10 informe 100.1; - para R$100,11 informe 100.11; para R$100,11\
+            \ negativo informe -100.11."
+          minimum: -100000000000000000
+          exclusiveMaximum: true
+          maximum: 100000000000000000
+          exclusiveMinimum: true
+          multipleOf: 0.01
+    GrupoPontoVendaCredDeb:
+      type: "object"
+      description: "Tipo exclusivo para Credito/Debito (variante de GrupoPontoVenda)"
+      required:
+      - "numCtrlCreddrPontoVenda"
+      - "ispbIfLiquidPontoVenda"
+      - "codPontoVenda"
+      - "nomePontoVenda"
+      - "tpPessoaPontoVenda"
+      - "cnpjCpfPontoVenda"
+      - "codInstitdrArrajPgto"
+      - "tpProdLiquidCarts"
+      - "indrFormaTransf"
+      - "codMoeda"
+      - "tpPontoVenda"
+      - "tpVlrPgto"
+      - "dtPgto"
+      - "vlrPgto"
+      properties:
+        numCtrlCreddrPontoVenda:
+          $ref: "#/components/schemas/numCtrlCreddrPontoVenda"
+        ispbIfLiquidPontoVenda:
+          type: "string"
+          description: "ISPB IF Liquidação Ponto Venda. Primeiras 8 posicões do CNPJ."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        codPontoVenda:
+          type: "string"
+          description: "Código Ponto Venda (PV)"
+          maxLength: 25
+        nomePontoVenda:
+          type: "string"
+          description: "Nome do Ponto Venda (PV)"
+          minLength: 1
+          maxLength: 80
+        tpPessoaPontoVenda:
+          type: "string"
+          description: "Tipo Pessoa Ponto de Venda. Tipo de Pessoa Destinatário."
+          minLength: 1
+          maxLength: 1
+        cnpjCpfPontoVenda:
+          type: "string"
+          description: "CNPJ ou CPF do Ponto de Venda. Número de Identificação da\
+            \ Pessoa Jurídica no Cadastro Nacional de Pessoa Jurídica ou o Número\
+            \ no Cadastro de Pessoa Física. No caso de transferência para pessoas\
+            \ isentas de CNPJ ou CPF, o campo CNPJ ou CPF deve ser preenchido com\
+            \ zero."
+          minLength: 0
+          maxLength: 14
+          pattern: "^(\\d{11}|[0-9A-Z]{12}[0-9]{2})$"
+        codInstitdrArrajPgto:
+          type: "string"
+          description: "Código Instituidor Arranjo Pagamento."
+          minLength: 3
+          maxLength: 3
+        tpProdLiquidCarts:
+          type: "string"
+          description: "Tipo Produto Liquidação de Cartões."
+          minLength: 2
+          maxLength: 2
+        indrFormaTransf:
+          type: "string"
+          description: "Indicador Forma Transferência"
+          minLength: 1
+          maxLength: 1
+        codMoeda:
+          type: "string"
+          description: "Código Moeda"
+          pattern: "^\\b[0-9]{3}$"
+        tpPontoVenda:
+          type: "string"
+          description: "Tipo de Ponto Venda"
+          minLength: 2
+          maxLength: 2
+        tpVlrPgto:
+          type: "string"
+          description: "Tipo Valor Pagamento"
+          minLength: 2
+          maxLength: 2
+        dtPgto:
+          type: "string"
+          description: "Data Pagamento. Ano, mês e dia no formato AAAA-MM-DD, onde\
+            \ AAAA = ano, MM = mês, DD = dia"
+        vlrPgto:
+          type: "number"
+          description: "Valor Pagamento. Valor. Até dezessete inteiros e dois decimais\
+            \ e sinalizado. Para valores menores que zero, o valor sera precedido\
+            \ pelo sinal '-'. Exemplos - para 20 negativo informe -20. Deve ser informado\
+            \ o ponto separador caso tenha decimais; - para R$100,00 informe 100;\
+            \ para R$100,10 informe 100.1; - para R$100,11 informe 100.11; para R$100,11\
+            \ negativo informe -100.11."
+          minimum: -100000000000000000
+          exclusiveMaximum: true
+          maximum: 100000000000000000
+          exclusiveMinimum: true
+          multipleOf: 0.01
+    GrupoSLC0912LiquidTranscCarts:
+      allOf:
+      - $ref: "#/components/schemas/GrupoLiquidTranscCarts"
+      - type: "object"
+        required:
+        - "grupoSLC0912Centrlz"
+        properties:
+          grupoSLC0912Centrlz:
+            $ref: "#/components/schemas/GrupoSLC0912Centrlz"
+    GrupoSLC0912Centrlz:
+      description: "Grupo Centralizadora"
+      required:
+      - "grupoSLC0912PontoVenda"
+      allOf:
+      - $ref: "#/components/schemas/GrupoCentrlz"
+      - type: "object"
+        properties:
+          grupoSLC0912PontoVenda:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/GrupoPontoVenda"
+            maxItems: 1000
+    GrupoSLC0913LiquidTranscCarts:
+      allOf:
+      - $ref: "#/components/schemas/GrupoLiquidTranscCarts"
+      - type: "object"
+        required:
+        - "grupoSLC0913Centrlz"
+        properties:
+          grupoSLC0913Centrlz:
+            $ref: "#/components/schemas/GrupoSLC0913Centrlz"
+    GrupoSLC0913Centrlz:
+      description: "Grupo Centralizadora"
+      required:
+      - "grupoSLC0913PontoVenda"
+      allOf:
+      - $ref: "#/components/schemas/GrupoCentrlz"
+      - type: "object"
+        properties:
+          grupoSLC0913PontoVenda:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/GrupoPontoVendaCredDeb"
+            maxItems: 1000
+    GrupoSLC0914LiquidTranscCarts:
+      allOf:
+      - $ref: "#/components/schemas/GrupoLiquidTranscCarts"
+      - type: "object"
+        required:
+        - "grupoSLC0914Centrlz"
+        properties:
+          grupoSLC0914Centrlz:
+            $ref: "#/components/schemas/GrupoSLC0914Centrlz"
+    GrupoSLC0914Centrlz:
+      description: "Grupo Centralizadora"
+      required:
+      - "grupoSLC0914PontoVenda"
+      allOf:
+      - $ref: "#/components/schemas/GrupoCentrlz"
+      - type: "object"
+        properties:
+          grupoSLC0914PontoVenda:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/GrupoPontoVendaCredDeb"
+            maxItems: 1000
+    SLC0915Response:
+      type: "object"
+      required:
+      - "situacao"
+      - "dtHrUltAlt"
+      description: "SLC0915RET - Lista de Números Únicos de Liquidação"
+      properties:
+        situacao:
+          type: "string"
+          description: "Situação da requisição"
+        dtHrUltAlt:
+          type: "string"
+          description: "Data/hora da última atualização. Representado conforme ISO\
+            \ 8601 formato \"date-time\""
+          format: "date-time"
+          example: "2024-09-01T17:32:28Z"
+        grupoPontoVendaActo:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/GrupoPontoVendaActo"
+        grupoPontoVendaRecsdo:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/GrupoPontoVendaRecsdo"
+    GrupoSLC0932:
+      description: "SLC0932 - Lista de NULiquids ou NumeroCtrlSLC"
+      oneOf:
+      - type: "object"
+        properties:
+          nuLiquid:
+            type: "array"
+            items:
+              type: "string"
+              description: "Número Único de Liquidação"
+              minLength: 21
+              maxLength: 21
+              example: "123456789012345678901"
+            minItems: 0
+            maxItems: 1000
+      - type: "object"
+        properties:
+          numCtrlCip:
+            $ref: "#/components/schemas/numCtrlCip"
+    GrupoSLC0908:
+      description: "SLC0908 - Lista de NULiquids ou NumeroCtrlSLC"
+      oneOf:
+      - type: "object"
+        properties:
+          nuLiquids:
+            type: "array"
+            items:
+              type: "string"
+              description: "Número Único de Liquidação"
+              minLength: 21
+              maxLength: 21
+              example: "123456789012345678901"
+            minItems: 0
+            maxItems: 1000
+      - type: "object"
+        properties:
+          numCtrlCip:
+            $ref: "#/components/schemas/numCtrlCip"
+    GrupoSLC0909:
+      description: "SLC0909 - Lista de NULiquids ou NumeroCtrlSLC"
+      oneOf:
+      - type: "object"
+        properties:
+          nuLiquids:
+            type: "array"
+            items:
+              type: "string"
+              description: "Número Único de Liquidação"
+              minLength: 21
+              maxLength: 21
+              example: "123456789012345678901"
+            minItems: 0
+            maxItems: 1000
+      - type: "object"
+        properties:
+          numCtrlCip:
+            $ref: "#/components/schemas/numCtrlCip"
+    SLC0932Response:
+      type: "object"
+      description: "SLC0932RET - Lista de Números Únicos de Liquidação"
+      properties:
+        GrupoLiquidacaoIapBilateralEncontrado:
+          $ref: "#/components/schemas/GrupoLiquidacaoIapBilateralEncontrado"
+        GrupoLiquidacaoIapBilateralNaoEncontrado:
+          $ref: "#/components/schemas/GrupoLiquidacaoIapBilateralNaoEncontrado"
+    GrupoLiquidacaoIapBilateralNaoEncontrado:
+      type: "object"
+      properties:
+        nuLiquid:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/nuLiquid"
+          maxItems: 1000
+        numCtrlCip:
+          $ref: "#/components/schemas/numCtrlCip"
+    GrupoLiquidacaoIapBilateralEncontrado:
+      type: "object"
+      properties:
+        liquidacaoIapBilateralEncontrado:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/LiquidacaoIapBilateralEncontrado"
+    LiquidacaoIapBilateralEncontrado:
+      required:
+      - "nuLiquid"
+      - "numeroControleCIP"
+      type: "object"
+      properties:
+        ispbPrincipal:
+          $ref: "#/components/schemas/ispbPrincipal"
+        ispbAdministrado:
+          $ref: "#/components/schemas/ispbAdministrado"
+        cnpjPrincipal:
+          $ref: "#/components/schemas/cnpjPrincipal"
+        cnpjAdministrado:
+          $ref: "#/components/schemas/cnpjAdministrado"
+        codArranjo:
+          $ref: "#/components/schemas/codArranjo"
+        nuLiquid:
+          $ref: "#/components/schemas/nuLiquid"
+        numeroControleCIP:
+          $ref: "#/components/schemas/numCtrlCip"
+        dtRef:
+          type: "string"
+          description: "Data de Referencia"
+          format: "date"
+        dtPgto:
+          type: "string"
+          description: "Data de Pagamento"
+          format: "date"
+        vlrPgto:
+          type: "number"
+          description: "Valor do Pagamento"
+          format: "double"
+        sitSolictLiquidacao:
+          type: "string"
+          description: "Situacao da Solicitacao da Liquidacao"
+          minLength: 1
+          maxLength: 60
+        numCtrlBandeira:
+          type: "string"
+          description: "Número Controle interno informado pela Bandeira"
+          minLength: 1
+          maxLength: 20
+          example: "12345678901234567891"
+    GrupoPontoVendaActo:
+      required:
+      - "numCtrlCreddrPontoVenda"
+      - "nuLiquid"
+      type: "object"
+      properties:
+        numCtrlCreddrPontoVenda:
+          $ref: "#/components/schemas/numCtrlCreddrPontoVenda"
+        nuLiquid:
+          $ref: "#/components/schemas/nuLiquid"
+    GrupoPontoVendaRecsdo:
+      required:
+      - "numCtrlCreddrPontoVenda"
+      - "atrbtErro"
+      - "codErro"
+      type: "object"
+      properties:
+        numCtrlCreddrPontoVenda:
+          $ref: "#/components/schemas/numCtrlCreddrPontoVenda"
+        atrbtErro:
+          type: "string"
+          description: "Atributo com erro"
+          maxLength: 255
+        codErro:
+          type: "string"
+          description: "Código do erro"
+          maxLength: 8
+    ControleLiquidacao:
+      type: "object"
+      description: "Controle de Liquidação"
+      properties:
+        numCtrlCip:
+          $ref: "#/components/schemas/numCtrlCip"
+      example:
+        numCtrlCip: "12345678901234567890"
+    numCtrlCip:
+      type: "string"
+      description: "Identificador da solicitação de liquidação"
+      pattern: "^\\d{20}$"
+      example: "12345678901234567890"
+    numCtrlCreddrPontoVenda:
+      type: "string"
+      description: "Número Controle Credenciador Ponto Venda"
+      minLength: 20
+      maxLength: 20
+      example: "12345678901234567891"
+    ispbPrincipal:
+      type: "string"
+      description: "ISPB Principal. Primeiras 8 posicões do CNPJ."
+      minLength: 8
+      maxLength: 8
+      pattern: "^\\d{8}$"
+    ispbAdministrado:
+      type: "string"
+      description: "ISPB Administrado. Primeiras 8 posicões do CNPJ."
+      minLength: 8
+      maxLength: 8
+      pattern: "^\\d{8}$"
+    cnpjPrincipal:
+      type: "string"
+      description: "CNPJ Principal."
+      pattern: "^\\d{14}$"
+    cnpjAdministrado:
+      type: "string"
+      description: "CNPJ Administrado."
+      pattern: "^\\d{14}$"
+    codArranjo:
+      type: "string"
+      description: "Código do Arranjo."
+      minLength: 1
+      maxLength: 3
+    numCtrlSLC:
+      type: "string"
+      description: "Número Controle do SLC"
+      minLength: 21
+      maxLength: 21
+      example: "123456789012345678901"
+    nuLiquid:
+      type: "string"
+      description: "Número Único de Liquidação"
+      minLength: 21
+      maxLength: 21
+      example: "123456789012345678901"
+    numCtrlBandeira:
+      type: "string"
+      description: "Número Controle interno informado pela Bandeira"
+      minLength: 1
+      maxLength: 20
+      example: "12345678901234567891"
+    GrupoSLC0930ArranjoPgto:
+      description: "Grupo Centralizadora"
+      allOf:
+      - $ref: "#/components/schemas/GrupoArranjoPgto"
+      - type: "object"
+        required:
+        - "grupoSLC0930LiquidacaoIapBilateral"
+        properties:
+          grupoSLC0930LiquidacaoIapBilateral:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/GrupoLiquidacaoIapBilateral"
+            minItems: 1
+            maxItems: 1000
+    GrupoArranjoPgto:
+      type: "object"
+      required:
+      - "dtRef"
+      - "dtPgto"
+      - "codIdentIap"
+      - "codIdentNuclea"
+      - "cnpjPrincipal"
+      - "ispbPrincipal"
+      - "codArranjo"
+      - "grupoSLC0930LiquidacaoIapBilateral"
+      description: "Grupo Arranjo de Pagamento"
+      properties:
+        dtRef:
+          type: "string"
+          description: "Data Pagamento. Ano, mês e dia no formato AAAA-MM-DD, onde\
+            \ AAAA = ano, MM = mês, DD = dia"
+        dtPgto:
+          type: "string"
+          description: "Data Pagamento. Ano, mês e dia no formato AAAA-MM-DD, onde\
+            \ AAAA = ano, MM = mês, DD = dia"
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+        codIdentIap:
+          type: "string"
+          description: "Código identidade do participante IAP."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        codIdentNuclea:
+          type: "string"
+          description: "Código identidade Nuclea 02992335"
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        ispbPrincipal:
+          $ref: "#/components/schemas/ispbPrincipal"
+        cnpjPrincipal:
+          $ref: "#/components/schemas/cnpjPrincipal"
+        codArranjo:
+          $ref: "#/components/schemas/codArranjo"
+    GrupoLiquidacaoIapBilateral:
+      type: "object"
+      description: "Liquidacao IAP Bilateral"
+      required:
+      - "vlrPgto"
+      - "qtdPgto"
+      - "ispbIfCreddr"
+      - "ispbIfDevdr"
+      - "codIdentCreddr"
+      - "codIdentDevdr"
+      - "cnpjCreddr"
+      - "cnpjDevdr"
+      - "nomDevdr"
+      - "nomCreddr"
+      - "numCtrlBandeira"
+      properties:
+        vlrPgto:
+          type: "number"
+          description: "Valor Pagamento. Valor. Até dezessete inteiros e dois decimais\
+            \ e sinalizado. Para valores menores que zero, o valor sera precedido\
+            \ pelo sinal '-'. Exemplos - para 20 negativo informe -20. Deve ser informado\
+            \ o ponto separador caso tenha decimais; - para R$100,00 informe 100;\
+            \ para R$100,10 informe 100.1; - para R$100,11 informe 100.11; para R$100,11\
+            \ negativo informe -100.11."
+          minimum: -100000000000000000
+          exclusiveMaximum: true
+          maximum: 100000000000000000
+          exclusiveMinimum: true
+          multipleOf: 0.01
+        qtdPgto:
+          type: "integer"
+          format: "int32"
+          description: "Quantidade de Pagamento(s)."
+          minimum: 1
+        ispbIfCreddr:
+          type: "string"
+          description: "ISPB IF Credenciadora. Primeiras 8 posicões do CNPJ."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        ispbIfDevdr:
+          type: "string"
+          description: "ISPB IF Devedora. Primeiras 8 posicões do CNPJ."
+          minLength: 8
+          maxLength: 8
+          pattern: "^\\d{8}$"
+        codIdentCreddr:
+          type: "string"
+          description: "Código do Arranjo."
+          minLength: 1
+          maxLength: 15
+        codIdentDevdr:
+          type: "string"
+          description: "Código do Arranjo."
+          minLength: 1
+          maxLength: 15
+        cnpjCreddr:
+          type: "string"
+          description: "CNPJ Credenciador."
+          pattern: "^\\d{14}$"
+        cnpjDevdr:
+          type: "string"
+          description: "CNPJ Credenciador."
+          pattern: "^\\d{14}$"
+        nomCreddr:
+          type: "string"
+          description: "Nome do Ponto Venda (PV)"
+          minLength: 1
+          maxLength: 50
+        nomDevdr:
+          type: "string"
+          description: "Nome do Ponto Venda (PV)"
+          minLength: 1
+          maxLength: 50
+        numCtrlBandeira:
+          type: "string"
+          description: "Numero de controle interno informado pela bandeira, sem repeticao\
+            \ na requisicao"
+          minLength: 1
+          maxLength: 20
+          example: "ABC12345678901234567890"
+    SLC0931Response:
+      type: "object"
+      required:
+      - "situacao"
+      - "dtHrUltAlt"
+      description: "SLC0931RET - Lista de Números Únicos de Liquidação"
+      properties:
+        situacao:
+          type: "string"
+          description: "Situação da requisição"
+        dtHrUltAlt:
+          type: "string"
+          description: "Data/hora da última atualização. Representado conforme ISO\
+            \ 8601 formato \"date-time\""
+          format: "date-time"
+          example: "2025-09-01T17:32:28Z"
+        grupoLiquidacaoIapBilateralActo:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/GrupoLiquidacaoIapBilateralActo"
+        grupoLiquidacaoIapBilateralRecsdo:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/GrupoLiquidacaoIapBilateralRecsdo"
+    GrupoLiquidacaoIapBilateralActo:
+      required:
+      - "numCtrlBandeira"
+      - "nuLiquid"
+      - "numeroControleCIP"
+      type: "object"
+      properties:
+        numCtrlBandeira:
+          $ref: "#/components/schemas/numCtrlBandeira"
+        nuLiquid:
+          $ref: "#/components/schemas/nuLiquid"
+        numeroControleCIP:
+          $ref: "#/components/schemas/numCtrlCip"
+    GrupoLiquidacaoIapBilateralRecsdo:
+      required:
+      - "numCtrlBandeira"
+      - "atrbtErro"
+      - "codErro"
+      - "numeroControleCIP"
+      type: "object"
+      properties:
+        numCtrlBandeira:
+          $ref: "#/components/schemas/numCtrlBandeira"
+        numeroControleCIP:
+          $ref: "#/components/schemas/numCtrlCip"
+        atrbtErro:
+          type: "string"
+          description: "Atributo com erro"
+          maxLength: 255
+        codErro:
+          type: "string"
+          description: "Código do erro"
+          maxLength: 8
+    ControleArranjo:
+      type: "object"
+      description: "Controle de Arranjo"
+      properties:
+        numCtrlCip:
+          $ref: "#/components/schemas/numCtrlCip"
+      example:
+        numCtrlCip: "12345678901234567890"
+  parameters:
+    xJwsSignature:
+      name: "x-jws-signature"
+      in: "header"
+      description: "Cabeçalho que contém assinatura JWS do corpo do payload e o JOSE\
+        \ Header."
+      required: true
+      schema:
+        type: "string"
+    phAcceptEncoding:
+      name: "Accept-Encoding"
+      in: "header"
+      description: "Define as codificações possíveis para a resposta. Caso deseje-se\
+        \ que a resposta seja compactada preencher com gzip."
+      schema:
+        type: "string"
+        default: "gzip"
+    phContentEncoding:
+      name: "Content-Encoding"
+      in: "header"
+      description: "Define a codificação de compressão da requisição. Caso deseje-se\
+        \ compactar utilizar o gzip."
+      schema:
+        type: "string"
+    pqtMsgEco:
+      name: "msg"
+      in: "query"
+      description: "Mensagem de eco."
+      required: true
+      schema:
+        type: "string"
+        minLength: 1
+        maxLength: 50
+    pNumCtrlCip:
+      name: "numCtrlCip"
+      in: "path"
+      description: "Identificador da solicitação de liquidação."
+      required: true
+      schema:
+        $ref: "#/components/schemas/numCtrlCip"
+  headers:
+    xJwsSignature:
+      schema:
+        description: "Cabeçalho que contém assinatura JWS do corpo do payload e o\
+          \ JOSE Header."
+        type: "string"
+    phContentEncoding:
+      schema:
+        description: "Define a codificação de compressão da requisição. Caso deseje-se\
+          \ compactar utilizar o gzip."
+        type: "string"
+servers:
+- url: "https://apicentral.axway.com/apimocks/124891/slc-servico-de-liquidacao-de-cartoes"
+x-axway-mock:
+  name: "slc-servico-de-liquidacao-de-cartoes"

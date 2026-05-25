@@ -1,6 +1,6 @@
 # SelfSigned
 
-Este diretorio contem os artefatos de certificado autoassinado e o processo para gerar um arquivo `PFX`.
+Este diretorio contem os artefatos de certificado autoassinado e o processo para gerar um arquivo `PFX` (opcional).
 
 **Observação importante sobre a senha da `.key`:**
 Na versão original do script, senhas contendo `!` podiam ser corrompidas pelo `cmd` por causa de `setlocal enabledelayedexpansion`.
@@ -13,11 +13,11 @@ O ajuste feito no script evita esse problema e preserva a senha exatamente como 
 - `Certnew.cer`: certificado
 - `Certnew.key`: chave privada
 - `Certnew.csr`: CSR
-- `Certnew.pfx`: pacote PKCS#12 gerado a partir do `.cer` e `.key`
+- `Certnew.pfx`: pacote PKCS#12 gerado a partir do `.cer` e `.key` (opcional)
 - `GerarCertificado.bat`: gera `.key`, `.cer` e `.csr`
-- `GerarPfx.bat`: gera `.pfx` a partir do `.cer` e `.key`
+- `GerarPfx.bat`: gera `.pfx` a partir do `.cer` e `.key` (opcional)
 
-## Geracao do PFX
+## Geracao do PFX (opcional)
 
 Foi gerado o arquivo `Certnew.pfx` usando:
 
@@ -25,7 +25,7 @@ Foi gerado o arquivo `Certnew.pfx` usando:
 - chave privada: `Certnew.key`
 - friendly name: `Certnew`
 
-## Como gerar o PFX com o batch
+### Como gerar o PFX com o batch (opcional)
 
 O `GerarPfx.bat` foi feito para usar automaticamente os arquivos da pasta atual:
 
@@ -56,31 +56,6 @@ Observacao:
 
 - se quiser usar a mesma senha para a chave e para o `PFX`, informe a mesma senha nas duas perguntas do `OpenSSL`
 - esse formato e `full .bat`, sem chamar `PowerShell`
-
-## Como gerar o PFX manualmente com OpenSSL
-
-```bat
-openssl pkcs12 -export ^
-  -out Certnew.pfx ^
-  -inkey Certnew.key ^
-  -in Certnew.cer ^
-  -name "Certnew"
-```
-
-Nesse modo, o proprio `OpenSSL` vai pedir interativamente:
-
-- a senha da chave privada, se houver
-- a senha do `PFX`
-
-## Validacao
-
-Para validar o PFX:
-
-```bat
-openssl pkcs12 -in Certnew.pfx -info -noout -passin pass:SENHA
-```
-
-Se o comando retornar a estrutura PKCS#12 sem erro, o `PFX` esta consistente.
 
 ## Seguranca
 
